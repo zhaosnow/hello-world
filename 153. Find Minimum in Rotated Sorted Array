@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int i=0,j=nums.size()-1;
+        while(i<j){
+            int mid=(j-i)/2+i;
+            if(nums[mid]>=nums[i]){//等于号很重要,因为如果只有两个元素且是降序排列则会出错
+                if(nums[mid]>nums[j])
+                    i=mid+1;
+                else
+                    j=mid-1;
+            }else{
+                j=mid;
+            }
+        }
+        return nums[i];
+    }
+};
