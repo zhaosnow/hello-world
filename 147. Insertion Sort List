@@ -1,0 +1,22 @@
+//完全模拟数组插入算法
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        if(head==NULL)return NULL;
+        ListNode* cur=head,*new_head=new ListNode(-1),*p;
+        new_head->next=head;
+        while(cur->next!=NULL){
+            if(cur->val>cur->next->val){
+                p=new_head;
+                while(p->next->val<cur->next->val)
+                    p=p->next;
+                ListNode *tmp=cur->next;
+                cur->next=cur->next->next;
+                tmp->next=p->next;
+                p->next=tmp;
+            }else
+                cur=cur->next;
+        }
+        return new_head->next;
+    }
+};
