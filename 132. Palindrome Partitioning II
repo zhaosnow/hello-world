@@ -1,0 +1,45 @@
+//dp
+class Solution {
+public:
+    int minCut(string s) {
+        vector<int>cut(s.size(),0);
+        vector<vector<bool>>v(s.size(),vector<bool>(s.size(),0));
+        for(int i=0;i<s.size();i++)
+            cut[i]=i;
+        for(int i=0;i<s.size();i++){
+            for(int j=0;j<=i;j++){
+                if(s[j]==s[i]&&(i-j<=1||v[j+1][i-1])){
+                    v[j][i]=true;
+                    if(j==0)cut[i]=0;
+                    else cut[i]=min(cut[i],cut[j-1]+1);
+                }
+            }
+        }
+       return cut[s.size()-1];     
+    }
+};
+//dp，效率明显比上面快了好几倍，究其原因就是vector<bool>不是标准意义上的容器
+//其内部并不是标准的bool值，c++vector<bool>值为了减少空间消耗便使用了bit来存储
+//元素也即比通常的bool值小8倍之多，而c++最小寻址也是按byte来算的，所以vector<bool>
+//需要逐位访问，所以速度比较慢。所以一般情况下尽量不要使用vector<bool>
+class Solution {
+public:
+    int minCut(string s) {
+        int cut[s.size()];
+        bool v[s.size()][s.size()];
+        memset(v,0,sizeof(v));
+        memset(cut,0,sizeof(cut));
+        for(int i=0;i<s.size();i++)
+            cut[i]=i;
+        for(int i=0;i<s.size();i++){
+            for(int j=0;j<=i;j++){
+                if(s[j]==s[i]&&(i-j<=1||v[j+1][i-1])){
+                    v[j][i]=true;
+                    if(j==0)cut[i]=0;
+                    else cut[i]=min(cut[i],cut[j-1]+1);
+                }
+            }
+        }
+       return cut[s.size()-1];     
+    }
+};
