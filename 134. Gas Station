@@ -1,0 +1,17 @@
+//很明显是最大子数组和的变形,如果子数组和小于0，那么在该位置前面的任意位置都不可能到达终点。
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int pos=-1,sum=0;
+        int tmp=0;
+        for(int i=0;i<gas.size();i++){
+            sum+=gas[i]-cost[i];
+            tmp+=gas[i]-cost[i];
+            if(sum<0){
+                sum=0;
+                pos=i;
+            }
+        }
+        return  tmp<0?-1:pos+1;
+    }
+};
