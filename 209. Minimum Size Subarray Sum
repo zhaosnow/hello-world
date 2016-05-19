@@ -1,0 +1,49 @@
+//O(n)没什么好说的，two pointer
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        int sum=0,j=0,i=0;
+        int len=INT_MAX;
+        while(j<nums.size()){
+            sum+=nums[j];
+            while(sum>=s){
+                len=min(len,j-i+1);
+                sum-=nums[i++];
+            }
+            j++;
+        }
+        return len==INT_MAX?0:len;
+    }
+};
+//nlog(n)关键就是要构造出排序数组才能找到nlogn
+class Solution {
+public:
+   int minSubArrayLen(int s, vector<int>& nums) {
+        vector<int> sums = accumulate(nums);
+        int n = nums.size(), minlen = INT_MAX;
+        for (int i = 1; i <= n; i++) { 
+            if (sums[i] >= s) {
+                int p = upper_bound(sums, 0, i, sums[i] - s);
+                if (p != -1) minlen = min(minlen, i - p + 1);
+            }
+        }
+        return minlen == INT_MAX ? 0 : minlen;
+    }
+private:
+    vector<int> accumulate(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> sums(n + 1, 0);
+        for (int i = 1; i <= n; i++) 
+            sums[i] = nums[i - 1] + sums[i - 1];
+        return sums;
+    }
+    int upper_bound(vector<int>& sums, int left, int right, int target) {
+        int l = left, r = right;
+        while (l < r) {
+            int m = l + ((r - l) >> 1);
+            if (sums[m] <= target) l = m + 1;
+            else r = m;
+        }
+        return sums[r] > target ? r : -1;
+    }
+};
