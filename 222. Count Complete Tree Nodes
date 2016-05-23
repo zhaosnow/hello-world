@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if(root==NULL)return 0;
+        int left=getheight(root->left);
+        int right=getheight(root->right);
+        if(left==right)return pow(2,left)+countNodes(root->right);
+        else return pow(2,right)+countNodes(root->left);
+    }
+    int getheight(TreeNode* root){
+        int height=0;
+        while(root!=NULL){
+            height++;root=root->left;
+            
+        }
+        return height;
+    }
+};
+//比较左右高度可以提前减支，减少递归次数
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if (!root)
+            return 0;
+        int leftDepth = 0, rightDepth= 0;
+        for(TreeNode* p=root; p; p=p->left) ++leftDepth;
+        for(TreeNode* p=root; p; p=p->right) ++rightDepth;
+        if (leftDepth==rightDepth) {
+            return (1<< leftDepth) - 1 ;
+        }
+        else {
+            return countNodes(root->left) + countNodes(root->right) + 1 ;
+        }
+    }
+
+};
