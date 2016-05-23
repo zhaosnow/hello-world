@@ -1,0 +1,34 @@
+//很明显是一道dp题，正着dp，明显速度要慢一些
+class Solution {
+public:
+    bool wordBreak(string s, unordered_set<string>& wordDict) {
+        bool dp[s.size()+1];
+        memset(dp,0,sizeof(dp));
+        dp[0]=true;
+        for(int i=1;i<=s.size();i++){
+            for(int j=0;j<i;j++){
+                if(dp[j]&&wordDict.find(s.substr(j,i-j))!=wordDict.end()){
+                    dp[i]=true;break;
+                }
+            }
+        }
+        return dp[s.size()];
+    }
+};
+//倒着dp，速度更快
+class Solution {
+public:
+    bool wordBreak(string s, unordered_set<string>& wordDict) {
+        bool dp[s.size()+1];
+        memset(dp,0,sizeof(dp));
+        dp[s.size()]=true;
+        for(int i=s.size()-1;i>=0;i--){
+            for(int j=i;j<s.size();j++){
+                if(dp[j+1]&&wordDict.find(s.substr(i,j-i+1))!=wordDict.end()){
+                    dp[i]=true;   
+                }
+            }
+        }
+        return dp[0];
+    }
+};
