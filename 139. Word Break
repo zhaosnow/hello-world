@@ -32,3 +32,20 @@ public:
         return dp[0];
     }
 };
+//dfs加减支，明显速度更快
+class Solution {
+public:
+    bool wordBreak(string s, unordered_set<string>& wordDict) {
+        vector<bool>visit(s.size()+1,0);
+        return wb(s,s.size(),visit,wordDict);
+    }
+    bool wb(string s,int pos,vector<bool>&visit,unordered_set<string>&wordDict){
+        if(pos==0)return true;
+        visit[pos]=true;
+        for(int i=pos;i>=0;i--){
+            if(!visit[i]&&wordDict.find(s.substr(i,pos-i))!=wordDict.end()&&wb(s,i,visit,wordDict))
+                return true;
+        }
+        return false;
+    }
+};
