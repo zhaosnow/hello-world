@@ -1,0 +1,4 @@
+1.unordered_map 与map的区别。unordered_map是boost库实现的，其采用散列表来实现的，如果hash值相同则放在同一个桶中。因此查找速度相对较快。
+而map是stl实现的，采用二叉树的形式，所以查找速度为logN。
+2.vector<bool>效率慢的原因：
+因为vector bool中bool是以bit来存储的，一个字节存储8bit的内容，而计算机的最小操作单位是字节，所以如果按比特操作，速度势必会慢一点。
