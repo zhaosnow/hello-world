@@ -1,0 +1,21 @@
+//这题是典型的动态规划，假设j是最后一个求和的数字所在的索引，那么sum = max(sum, nums[start-1]*nums[j]*nums[end+1]+sum[start][j-1]+sum[j+1][end])
+//所以这是一个从最后面开始的动归问题
+class Solution {
+public:
+    int maxCoins(vector<int>& nums) {
+       int len = nums.size();
+       nums.insert(nums.begin(),1);
+       nums.push_back(1);
+       int maxsum[len+2][len+2];
+       memset(maxsum, 0, sizeof(maxsum));
+       for(int i=0; i<len; i++){
+           for(int start=1; start<=len-i; start++){
+               int end = start + i;
+               for(int j=start; j<=end; j++){
+                   maxsum[start][end]=max(maxsum[start][end], maxsum[start][j-1]+maxsum[j+1][end]+nums[start-1]*nums[j]*nums[end+1]);
+               }
+           }
+       }
+       return maxsum[1][len];
+    }
+};
