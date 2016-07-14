@@ -1,0 +1,34 @@
+//利用桶排序，桶i中存储两个值min，max，即该桶中的最大值，那么整个数组的最大间隔必然为相邻桶min-max中。反证法：假设最大gap在同一个
+桶内，那么gap*(n-1)<bucket*(n-1)=mx-mi;而gap*(n-1)所求的即为mx-mi的值，互相矛盾。当然也可以排序后直接暴力求解
+class Solution {
+public:
+    int maximumGap(vector<int>& nums) {
+        if(nums.size()<2)return 0;
+        int mx=nums[0],mi=nums[0];
+        int maxgap=0;
+        for(int i=1;i<nums.size();i++){
+            mx=max(mx,nums[i]);
+            mi=min(mi,nums[i]);
+        }
+        vector<vector<int>>v(nums.size());
+        int bucket=(mx-mi)/((int)nums.size()-1)+1;
+       // if(bucket==1)return 0;
+        for(int i=0;i<nums.size();i++){
+            int index=(nums[i]-mi)/bucket;
+            if(v[index].size()==0){
+                v[index].push_back(nums[i]);
+                v[index].push_back(nums[i]);
+            }else{
+                v[index][0]=min(v[index][0],nums[i]);
+                v[index][1]=max(v[index][1],nums[i]);
+            }
+        }
+        int p=0;maxgap=v[0][1]-v[0][0];
+        for(int i=1;i<nums.size();i++){
+            if(v[i].empty())continue;
+            maxgap=max(v[i][0]-v[p][1],maxgap);
+            p=i;
+        }
+        return maxgap;
+    }
+};
