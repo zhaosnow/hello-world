@@ -1,0 +1,22 @@
+//本题可以使用递归和非递归的方法。这里就不写非递归的方法了
+//对于递归的方法也有明显的区别
+方法1：
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root==NULL)
+            return 0;
+        return max(maxDepth(root->left)+1,maxDepth(root->right)+1);
+    }
+};
+方法2：
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root==NULL)
+            return 0;
+        return max(maxDepth(root->left),maxDepth(root->right))+1;
+    }
+};
+//明显方法1要快一些，因为一颗树存在很多叶子节点，假设这里有一颗3个节点的满二叉树，那么对于方法1，一共max比较3次，而方法2则max了5次，因为
+比较了空节点，所以使用时要切记
