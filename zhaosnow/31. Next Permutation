@@ -1,0 +1,11 @@
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int i=nums.size()-1,j=i;
+        while(i>0&&nums[i-1]>=nums[i])i--;
+        i--;
+        while(i<j&&nums[j]<=nums[i])j--;
+        if(i>=0)swap(nums[i],nums[j]);
+        reverse(nums.begin()+i+1,nums.end());
+    }
+};

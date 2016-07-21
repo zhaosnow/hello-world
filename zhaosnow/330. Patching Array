@@ -1,0 +1,19 @@
+//这是一道贪心算法题，假设目前可以表示的区间为[0,bound)，如果出现nums[i]<=bound，那么现在可表示的区间为[0,bound+nums[i]]，反之说明无法表
+//示bound这个数，所以需要向里面添加一个数bound，同时区间长度变为[0,bound+bound]。
+class Solution {
+public:
+    int minPatches(vector<int>& nums, int n) {
+        long long bound=1;
+        int i=0,cnt=0;
+        while(bound<=n){
+            if(i<nums.size()&&nums[i]<=bound){
+                bound+=nums[i];
+                i++;
+            }else{
+                bound+=bound;
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+};

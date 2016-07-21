@@ -1,0 +1,104 @@
+//dfs
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites) {
+        vector<unordered_set<int>>gp(numCourses);
+        bool visit[numCourses];
+        memset(visit,0,sizeof(visit));
+        for(int i=0;i<prerequisites.size();i++){
+            gp[prerequisites[i].second].insert(prerequisites[i].first);
+        }
+        for(int i=0;i<numCourses;i++){
+            if(visit[i])continue;
+            unordered_set<int>st;
+            if(dfs(gp,visit,st,i))
+                return false;
+        }
+        return true;
+    }
+    bool dfs(vector<unordered_set<int>>&gp,bool visit[],unordered_set<int>&st,int a){
+        if(visit[a])return false;
+        visit[a]=true;
+        bool flag=false;
+        st.insert(a);
+        for(int i: gp[a]){
+            if(st.find(i)!=st.end())
+                return true;        
+          flag|=dfs(gp,visit,st,i);
+          /*正确
+          if(st.find(i)!=st.end()||dfs(gp,visit,st,i))
+                return true;
+            错误
+             if(st.find(i)!=st.end())
+                return true;
+          flag=dfs(gp,visit,st,i);//如果直接赋值的话，flag返回的是for循环最后一个的值，显然不正确所以因改为上面的做法。
+          或者：
+           if(st.find(i)!=st.end())
+                return true;
+          else return dfs(gp,visit,st,i);//如果直接返回的话，则会跳出for循环，导致后面的语句无法执行，所以出错。所以根本原因在于有无for
+          循环的区别
+          */
+        }
+         st.erase(a);//必须删除，因为如果不删除的话，对于 1->2,4->2,1->4来说，如果不删除最后的2，那么当通过4访问2时是可以的，但是答案确
+         出错
+        return flag;
+    }
+};
+//bfs
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites) {
+        vector<vector<int>>gp(numCourses);//没有用vector<unordered_set<int>>，因为边有重复的，比如1->9,1->9
+        int in[numCourses];
+        int cnt=0;
+        queue<int>q;
+        memset(in,0,sizeof(in));
+        for(int i=0;i<prerequisites.size();i++){
+            gp[prerequisites[i].second].push_back(prerequisites[i].first);
+            in[prerequisites[i].first]++;
+        }
+        for(int i=0;i<numCourses;i++)
+            if(in[i]==0)
+                q.push(i);
+        //cnt=q.size();
+        while(!q.empty()){
+            int cur=q.front();
+            q.pop();
+            cnt++;
+            for(int i=0;i<gp[cur].size();i++)
+                if(--in[gp[cur][i]]==0)
+                    q.push(gp[cur][i]);
+        }
+        return cnt==numCourses;
+    }
+};
+//使用  vector<unordered_set<int>>，不过速度要稍微慢一些
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites) {
+        vector<unordered_set<int>>gp(numCourses);
+        int in[numCourses];
+        int cnt=0;
+        queue<int>q;
+        memset(in,0,sizeof(in));
+        for(int i=0;i<prerequisites.size();i++){
+            if(gp[prerequisites[i].second].find(prerequisites[i].first)==gp[prerequisites[i].second].end()){
+            gp[prerequisites[i].second].insert(prerequisites[i].first);
+            in[prerequisites[i].first]++;
+            }
+        }
+        for(int i=0;i<numCourses;i++)
+            if(in[i]==0)
+                q.push(i);
+        //cnt=q.size();
+        while(!q.empty()){
+            int cur=q.front();
+            q.pop();
+            cnt++;
+            for(int i: gp[cur])
+                if(--in[i]==0)
+                    q.push(i);
+        }
+        return cnt==numCourses;
+    }
+};

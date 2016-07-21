@@ -1,0 +1,42 @@
+//递归做法，以为f(n)=f(n-1)*n,即每次拿第一个数和后面的数进行交换
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        dfs(nums,0);
+        return v;
+    }
+    void dfs(vector<int>& nums,int start){
+        if(start==nums.size()){
+            v.push_back(nums);
+            return ;
+        }
+        for(int i=start;i<nums.size();i++){
+            swap(nums[i],nums[start]);
+            dfs(nums,start+1);
+            swap(nums[i],nums[start]);
+        }
+    }
+private: vector<vector<int>>v;
+};
+//迭代过程,做法是dp,dp[n]=(在每一个dp[n-1]的排列前面插入nums[n],然后把nums[n]和后面的数交换然后插入到dp[n]中去。
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        int n=nums.size();
+        if(n<1)return vector<vector<int>>();
+        vector<vector<vector<int>>>dp(n);
+        dp[0]=vector<vector<int>>(1,vector<int>(1,nums[0]));
+        for(int i=1;i<n;i++){
+            for(int j=0;j<dp[i-1].size();j++){
+                dp[i-1][j].insert(dp[i-1][j].begin(),nums[i]);
+                dp[i].push_back(dp[i-1][j]);
+                for(int k=1;k<dp[i-1][j].size();k++){
+                    swap(dp[i-1][j][k],dp[i-1][j][0]);
+                    dp[i].push_back(dp[i-1][j]);
+                    swap(dp[i-1][j][k],dp[i-1][j][0]);
+                }
+            }
+        }
+        return dp[n-1];
+    }
+};

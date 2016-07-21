@@ -1,0 +1,46 @@
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        sort(candidates.begin(),candidates.end());
+        vector<int>tmp;
+        dfs(candidates,target,tmp,0);
+        return v;
+    }
+    void dfs(vector<int>&candidates,int target,vector<int>&tmp,int start){
+        if(target==0){
+            v.push_back(tmp);
+            return;
+        }
+        for(int i=start;i<candidates.size();i++){
+            if(candidates[i]>target)break;
+            tmp.push_back(candidates[i]);
+            dfs(candidates,target-candidates[i],tmp,i);
+            tmp.pop_back();
+        }
+    }
+private: vector<vector<int>>v;
+};
+//动态规划dp，和以前一样麻烦
+class Solution {
+public:
+vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+    vector<vector<int>> result;
+    int size = candidates.size();
+    if (size == 0) return result;
+    sort(candidates.begin(), candidates.end());
+    vector<vector<vector<int>>> dp(target + 1, vector<vector<int>>());
+    dp[0].push_back(vector<int>());
+
+    for (int i = 1; i <= target; ++i) {
+        for (int j = 0; j < size && candidates[j] <= i; ++j) {
+            for (int k = 0; k < dp[i - candidates[j]].size(); ++k) {
+                vector<int> temp = dp[i - candidates[j]][k];
+                if (temp.size() && (temp[temp.size() - 1] > candidates[j])) continue;
+                temp.push_back(candidates[j]);
+                dp[i].push_back(temp);
+            }
+        }
+    }
+    return dp[target];
+}
+};
