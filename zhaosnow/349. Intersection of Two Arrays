@@ -1,0 +1,30 @@
+//本人代码12ms
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_set<int>  s(nums1.begin(), nums1.end());
+        vector<int> v;
+        for(int j = 0; j < nums2.size(); j ++){
+            if(s.count(nums2[j])){
+                v.push_back(nums2[j]);
+                s.erase(nums2[j]);
+            }
+        }
+        return v;
+    }
+};
+//他人代码8ms
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+         unordered_set<int> m(nums1.begin(), nums1.end());
+        vector<int> res;
+        for (auto a : nums2)
+            if (m.count(a)) {
+                res.push_back(a);
+                m.erase(a);
+            }
+        return res;
+    }
+};
+//很明显使用auto之后速度更快，原因未知，但是代码确实简洁很多
