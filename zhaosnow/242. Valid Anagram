@@ -1,0 +1,32 @@
+//对于该题来说，首先想到的便是比较排序后两个字符串是否相同。这样算法的复杂度为O(nlongn)
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+       sort(s.begin(), s.end());
+       sort(t.begin(), t.end());
+       return s == t;
+    }
+};
+//第二种方法便是用统计排序的思想，记录下字符串s种的每个字符个数，然后再遍历字符串t，看一看t种所含字符串种类个数是否于s相匹配
+//由于本题所涉及范围为小写字符，所以这里用int[26]存储即可，其他情况下需使用map。再者如果这里问的是是否含有相同的字符集的话，
+//那么只需使用int型变量存储即可，这种复杂度为O（n）
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+       if(s.size() != t.size())
+          return false;
+       int array[26];
+       memset(array, 0, sizeof(array));
+       for(int i = 0; i < s.size(); i ++){
+           array[s[i] - 'a'] += 1;
+       }
+       for(int j =0 ; j < t.size(); j ++){
+           int index = t[j] - 'a';
+           if(array[index] -- > 0)
+              continue;
+           else
+              return false;
+       }
+       return true;
+    }
+};
