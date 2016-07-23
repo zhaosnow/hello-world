@@ -1,3 +1,12 @@
+//因为题目中给定众数一定存在，所以可以省略掉好多判断，最容易想到的方法肯定是排序后返回n/2位置处的元素。
+//当然也可以使用记数排序的方法统计元素的个数，也就是空间换时间，这里就不写了。
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+       sort(nums.begin(), nums.end());
+       return nums[nums.size() / 2];
+    }
+};
 //最简单的O（n）算法，利用两两相消的做法。
 class Solution {
 public:
@@ -12,5 +21,21 @@ public:
             }else count--;
         }
          return tmp;
+    }
+};
+//改进版的代码
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+       int count = 0;
+       int temp = 0;
+       for(int i = 0; i < nums.size(); i ++){
+           if(count == 0 || temp == nums[i]){
+               count ++;
+               temp = nums[i];
+           }else
+               count --;
+       }
+       return temp;
     }
 };
