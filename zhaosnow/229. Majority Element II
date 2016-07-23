@@ -1,4 +1,5 @@
-//求众数做法的延生，切记else if的顺序不能出错
+//本题没说一定存在，所以需要最后自己判断。同时由于>n/3,所以最多存在两个，所以可写成如下代码，并推广到m，求众数做法的延生，
+//切记else if的顺序不能出错
 class Solution {
 public:
     vector<int> majorityElement(vector<int>& nums) {
