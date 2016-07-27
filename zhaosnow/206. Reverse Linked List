@@ -1,0 +1,31 @@
+//递归做法
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode *p=head,*q=NULL,*next;
+        while(p!=NULL)
+        {
+            next=p->next;
+            p->next=q;
+            q=p;
+            p=next;
+        }
+        return q;
+    }
+};
+//非递归做法
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head==NULL)return NULL;
+        if(head->next==NULL)return head;
+        ListNode* next=reverseList(head->next);
+        if(next!=NULL){
+            p=head->next;
+            p->next=head;
+            head->next=NULL;
+        }
+        return next;
+    }
+private: ListNode* p;
+};
