@@ -1,0 +1,27 @@
+//注意防止内存泄漏
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(head == NULL || head->next == NULL)
+            return head;
+        ListNode* p = head, *q = head->next;
+        while(q != NULL){
+            if(p->val == q->val){
+                p->next = q->next;
+                free(q);
+                q = p->next;
+            }else{
+                p = p->next;
+                q = q->next;
+            }
+        }
+        return head;
+    }
+};
+//写列表的时候，永远可以考虑一下递归写法，参考别人答案。
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+       if (head && (head->next = deleteDuplicates(head->next)) && head->next->val == head->val) delete head, head = head->next; return head;
+    }
+};
