@@ -1,0 +1,7 @@
+//只是在考察2的基础上加了判断，因4^n=3x+1,假设4^n/3=x;
+class Solution {
+public:
+    bool isPowerOfFour(int num) {
+        return num > 0 && (num & (num - 1)) == 0 && ((num - 1) % 3 == 0);
+    }
+};
