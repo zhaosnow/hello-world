@@ -1,0 +1,23 @@
+//只能说  pow(res%10，2)比(res%10) * (res%10)更加耗费时间
+class Solution {
+public:
+    bool isHappy(int n) {
+        int res = n;
+        unordered_set<int> s;
+        while(true){
+            int temp = 0;
+            while(res){
+                temp += (res%10) * (res%10);
+                res /= 10;
+            }
+            if(s.find(temp) != s.end())
+                return false;
+            else if(temp == 1)
+                return true;
+            else
+                s.insert(temp);
+            res = temp;
+        }
+        return false;
+    }
+};
